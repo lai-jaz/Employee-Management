@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a list of employees from the database
      */
     public function index()
     {
-        //
+        $employees = Employee::all();
+        return view('employee.data', compact('employees'));
     }
 
     /**
@@ -44,7 +46,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('employee.edit', compact('employee'));
     }
 
     /**

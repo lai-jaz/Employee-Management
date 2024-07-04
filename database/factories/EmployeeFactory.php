@@ -19,6 +19,8 @@ class EmployeeFactory extends Factory
     {
         $faker = Faker::create();
         $departments = ['Accounts', 'Sales', 'HR', 'IT', 'Marketing']; // 0 to 4 index
+        $salaryFloat = $faker->randomFloat(2, 20000.00, 80000.00);
+        $salaryFloatRounded = round($salaryFloat, -3); // round to nearest 10,000
 
         return [
            'fName' => $faker->firstName(),
@@ -27,7 +29,7 @@ class EmployeeFactory extends Factory
             'phoneNo' => $faker->numerify('###-###-####'),
             'address' => $faker->address(),
             'DOB' => $faker->date('y-m-d', '2003-07-31'),
-            'salary' => $faker->randomFloat(2, 20000.00, 80000.00),
+            'salary' => $salaryFloatRounded,
             'Department' => $departments[$faker->numberBetween(0, 4)],
         ];
     }
