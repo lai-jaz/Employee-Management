@@ -13,24 +13,46 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::orderBy('empID', 'desc')->get();
         return view('employee.data', compact('employees'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for adding a new employee.
      */
     public function create()
     {
-        //
+        return view('employee.addnew');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store the newly created record in database.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'fName' => 'required|string|max:255',
+            'lName' => 'required|string|max:255',
+            'DOB' => 'required|date',
+            'salary' => 'required|numeric',
+            'Department' => 'required|string',
+            'email' => 'required|email',
+            'phoneNo' => 'required|regex:/\d{3}[\-]\d{3}[\-]\d{4}/',
+            'address' => 'required|string|max:255',
+        ]);
+
+        Employee::create([
+            'fName' => $request->input('fName'),
+            'lName' => $request->input('lName'),
+            'email' => $request->input('email'),
+            'phoneNo' => $request->input('phoneNo'),
+            'address' => $request->input('address'),
+            'DOB' => $request->input('DOB'),
+            'salary' => $request->input('salary'),
+            'Department' => $request->input('Department'),
+        ]);
+
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -42,7 +64,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the employee details.
      */
     public function edit(Employee $employee)
     {
@@ -50,18 +72,30 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the employee details in database.
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        $employee->update([
+            'fName' => $request->input('fName'),
+            'lName' => $request->input('lName'),
+            'email' => $request->input('email'),
+            'phoneNo' => $request->input('phoneNo'),
+            'address' => $request->input('address'),
+            'DOB' => $request->input('DOB'),
+            'salary' => $request->input('salary'),
+            'Department' => $request->input('Department'),
+        ]);
+
+        return redirect()->route('employees.index'); 
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified employee record from database.
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return redirect()->route('employees.index');
     }
 }
