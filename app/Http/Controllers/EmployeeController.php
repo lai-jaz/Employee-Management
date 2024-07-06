@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             'address' => 'required|string|max:255',
         ]);
 
-        Employee::create([
+        $result = Employee::create([
             'fName' => $request->input('fName'),
             'lName' => $request->input('lName'),
             'email' => $request->input('email'),
@@ -52,7 +52,14 @@ class EmployeeController extends Controller
             'Department' => $request->input('Department'),
         ]);
 
-        return redirect()->route('employees.create');
+        if($result)
+        {
+            return redirect()->route('employees.create')->with('success-add', 'Added successfully');
+        }
+        else
+        {
+            return redirect()->back()->withInput()->with('error-add', 'Failed to add record');
+        }
     }
 
     /**
@@ -76,7 +83,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        $employee->update([
+        $result = $employee->update([
             'fName' => $request->input('fName'),
             'lName' => $request->input('lName'),
             'email' => $request->input('email'),
@@ -87,7 +94,14 @@ class EmployeeController extends Controller
             'Department' => $request->input('Department'),
         ]);
 
-        return redirect()->route('employees.index'); 
+        if($result)
+        {
+            return redirect()->route('employees.index')->with('success-update', 'Updated successfully'); 
+        }
+        else 
+        {
+            return redirect()->back()->withInput()->with('error-update', 'Failed to update employee');
+        }
     }
 
     /**
@@ -95,8 +109,15 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee->delete();
-        return redirect()->route('employees.index');
+        $result = $employee->delete();
+        if($result)
+        {
+            return redirect()->route('employees.index')->with('success-delete', 'Deleted successfully');
+        }
+        else
+        {
+            return redirect()->back()->withInput()->with('error-delete', 'Failed to delete employee');
+        }
     }
 
     /**
