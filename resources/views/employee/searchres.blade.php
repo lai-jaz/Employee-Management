@@ -5,7 +5,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Employees') }}
+            {{ __('Search Results for: ') }} {{ $searchKeyword }}
         </h2>
 
         <!--- search form --->
@@ -19,13 +19,15 @@
     </x-slot>
 
     <div class="py-6">
-
         <div class="max-w-7xl mx-auto sm:px-4 lg:px-4">
-        @if($employees->isEmpty())
-            <p>{{__('No employees found.')}}</p>
-        @else
+
             <div>
-                <!--- table to display the employee database --->
+            @if($searchResults->isEmpty())
+                <div>
+                    {{__('No results found.')}}
+                </div>
+            @else
+                <!--- table to display the search results --->
                 <table class="table-auto">
                     <thead>
                         <tr>
@@ -41,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($employees as $employee)
+                        @foreach ($searchResults as $employee)
                         <tr class="odd:bg-white even:bg-slate-200">
                             
                             <!--- edit and delete buttons --->
@@ -70,13 +72,8 @@
                     </tbody>
 
                 </table> 
+                @endif
             </div>
-
-            <div class="mt-3 mb-5 pagination">
-            <!-- display pagination links -->
-                {{ $employees->links('vendor.pagination.tailwind') }}
-            </div>
-            @endif
             
         </div> 
     </div>

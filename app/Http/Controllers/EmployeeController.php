@@ -13,7 +13,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::orderBy('empID', 'desc')->get();
+        $employees = Employee::orderBy('empID', 'desc')->paginate(10);
         return view('employee.data', compact('employees'));
     }
 
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
             'Department' => $request->input('Department'),
         ]);
 
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.create');
     }
 
     /**
@@ -97,5 +97,29 @@ class EmployeeController extends Controller
     {
         $employee->delete();
         return redirect()->route('employees.index');
+    }
+
+    /**
+     * Returns records that match the search results
+     */
+    public function search(Request $request)
+    {
+        $searchKeyword = $request->input('search');
+        $searchResults = Employee::where(function ($query) use ($searchKeyword) {
+            if (is_numeric($searchKeyword)) {
+                $query->where('empID', $searchKeyword)
+                      ->orWhere('phoneNo', $searchKeyword);
+            } 
+            else
+            {
+                $query->where('fName', 'like', '%' . $searchKeyword . '%')
+                  ->orWhere('lName', 'like', '%' . $searchKeyword . '%')
+                  ->orWhere('email', 'like', '%' . $searchKeyword . '%')
+                  ->orWhere('address', 'like', '%' . $searchKeyword . '%')
+                  ->orWhere('Department', 'like', '%' . $searchKeyword . '%');
+            }
+        })->get();
+
+        return view('employee.searchres', compact('searchResults', 'searchKeyword'));
     }
 }
