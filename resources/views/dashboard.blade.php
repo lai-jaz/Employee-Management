@@ -30,7 +30,7 @@
                     <form method="POST" action="{{ route('employee.search') }}" class="flex">
                     @csrf
                     <x-text-input type="search" placeholder="Search for an employee" name="search" value="{{ request('search') }}" class="w-full"/>
-                    <x-secondary-button type="submit" class="mx-3"> Go! </x-secondary-button>
+                    <x-secondary-button type="submit" class="mx-3 bg-purple-200 hover:bg-purple-300"> Go! </x-secondary-button>
                     </form>
                 </div>
             </div>

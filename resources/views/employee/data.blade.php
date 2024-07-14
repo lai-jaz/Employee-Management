@@ -1,6 +1,8 @@
 <x-app-layout>
     <?php
         $tableData = "p-3";
+        $tableHeader = "px-3 bg-white py-2";
+        $thStyle = "position: sticky; top:0;";
     ?>
 
     <x-slot name="header">
@@ -13,7 +15,7 @@
             <form method="POST" action="{{ route('employee.search') }}" class="flex">
             @csrf
             <x-text-input type="search" placeholder="Search" name="search" value="{{ request('search') }}" />
-            <x-secondary-button type="submit" class="mx-3"> Go! </x-secondary-button>
+            <x-secondary-button type="submit" class="mx-3 bg-purple-200 hover:bg-purple-300"> Go! </x-secondary-button>
             </form>
         </div>
     </x-slot>
@@ -28,32 +30,36 @@
                 <!--- table to display the employee database --->
                 <table class="table-auto">
                     <thead>
-                        <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Salary</th>
-                        <th>Department</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Date Of Birth</th>
+                        <tr class="divide-y divide-y-reverse">
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} "></th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">ID</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">Name</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">Salary</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} "> Dept</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">Email</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">Phone</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">Address</th>
+                        <th class="{{ $tableHeader }}"style=" {{ $thStyle }} ">DOB</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($employees as $employee)
-                        <tr class="odd:bg-white even:bg-slate-200">
+                        <tr class="odd:bg-white even:bg-purple-100 text-sm">
                             
                             <!--- edit and delete buttons --->
                             <td class="{{ $tableData }}">
                             <form action="{{ route('employees.edit', $employee) }}"> 
                                 @csrf
-                                <x-secondary-button style="margin:auto; display:block; width:100%" type="submit">Edit</x-secondary-button>
+                                <x-secondary-button class="bg-slate-50 hover:bg-violet-200 h-7" style="margin:auto; display:block; width:100%" type="submit">
+                                <i class="fa-solid fa-pencil fa-1x"></i>
+                                </x-secondary-button>
                             </form>
                             <form method="POST" action="{{ route('employees.destroy', $employee) }}" class="mt-2"> 
                                 @csrf
                                 @method('DELETE')
-                                <x-secondary-button style="margin:auto; display:block; width:100%" type="submit" onclick="return confirm('Are you sure?')">Delete</x-secondary-button>
+                                <x-secondary-button class="bg-red-300 hover:bg-red-400 h-7" style="margin:auto; display:block; width:100%" type="submit" onclick="return confirm('Are you sure?')">
+                                <i class="fa-solid fa-trash"></i>
+                                </x-secondary-button>
                             </form>
                             </td>
 

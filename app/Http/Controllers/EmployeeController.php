@@ -126,18 +126,25 @@ class EmployeeController extends Controller
     public function search(Request $request)
     {
         $searchKeyword = $request->input('search');
-        $searchResults = Employee::where(function ($query) use ($searchKeyword) {
+
+        $departments = array_map('strtolower', config('departments.departments'));
+        $searchKeywordLower = strtolower($searchKeyword);
+
+        $searchResults = Employee::where(function ($query) use ($searchKeyword, $searchKeywordLower, $departments) {
             if (is_numeric($searchKeyword)) {
                 $query->where('empID', $searchKeyword)
                       ->orWhere('phoneNo', $searchKeyword);
             } 
+            else if(in_array($searchKeywordLower, $departments))
+            {
+                $query->whereRaw('LOWER(Department) = ?', [$searchKeywordLower]);
+            }
             else
             {
                 $query->where('fName', 'like', '%' . $searchKeyword . '%')
                   ->orWhere('lName', 'like', '%' . $searchKeyword . '%')
                   ->orWhere('email', 'like', '%' . $searchKeyword . '%')
-                  ->orWhere('address', 'like', '%' . $searchKeyword . '%')
-                  ->orWhere('Department', 'like', '%' . $searchKeyword . '%');
+                  ->orWhere('address', 'like', '%' . $searchKeyword . '%');
             }
         })->get();
 

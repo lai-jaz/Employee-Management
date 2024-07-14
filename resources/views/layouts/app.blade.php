@@ -15,12 +15,14 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://kit.fontawesome.com/6dd2164741.js" crossorigin="anonymous"></script>
 
         <!-- Table Css -->
-        <link href="tableCSS.css" rel="stylesheet" />
+        <link href="../public/tableCSS.css" rel="stylesheet" />
+
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
             <!-----flash messages for successful action--->
@@ -43,7 +45,7 @@
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
+                <header class="bg-white shadow font-mono">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
